@@ -3,17 +3,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/shared/Button";
 import Logo from "../components/shared/Logo";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { NavItem } from "../components/shared/NavItem";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const cn = isOpen ? "block" : "hidden";
+  const navigate = useNavigate();
 
   const barIcon = <FontAwesomeIcon icon={faBars} size="lg" />;
   const cancelIcon = <FontAwesomeIcon icon={faXmark} size="lg" />;
-  const handleSignup = () => {};
-  const handleLogin = () => {};
+  const handleSignup = () => {
+    navigate("/register");
+  };
+  const handleLogin = () => {
+    navigate("/login");
+  };
   return (
     <>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">

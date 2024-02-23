@@ -1,4 +1,5 @@
 import {
+  faGoogle,
   faLinkedin,
   faSquareFacebook,
   faSquareInstagram,
@@ -44,3 +45,4 @@ export const instaIcon = (
 export const linkdinIcon = (
   <FontAwesomeIcon icon={faLinkedin} size="2xl" color="white" />
 );
+export const googleIcon = <FontAwesomeIcon icon={faGoogle} />;

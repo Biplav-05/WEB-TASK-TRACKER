@@ -3,36 +3,59 @@ import toast from "react-hot-toast";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../components/shared/Logo";
 import { googleIcon } from "../components/shared/Icons";
-
+import { useGoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "../redux/slices/accessSlice";
+import { useRepository } from "../hooks/UseRepository";
 type LoginForm = {
   email: string;
   password: string;
 };
 const Login = () => {
+  const { repo, storage } = useRepository();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<LoginForm>();
-  const loginUser = async (data: LoginForm) => {
-    console.log(data);
-    const response = await fetch("http://localhost:8000/api/v1/users/login", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(response);
-    if (response.ok) {
-      navigate("/dashboard");
-      toast.success("You are logged in successfully");
-    } else {
-      toast.error("Failed to Login.");
+  const dispatch = useDispatch();
+
+  const loginByEmail = async (data: LoginForm) => {
+    const loginResponse = await repo.requestEmailLogin(data);
+    if (loginResponse) {
+      if ("accessToken" in loginResponse) {
+        storage.setAccessToken(loginResponse.accessToken);
+        dispatch(setAuthToken(loginResponse.accessToken));
+        storage.setRefreshToken(loginResponse.refreshToken);
+        navigate("/dashboard");
+        toast.success("You are logged in successfully");
+      } else {
+        toast.error(loginResponse.message);
+      }
     }
   };
-
   const handleLogin = (data: LoginForm) => {
-    loginUser(data);
+    loginByEmail(data);
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      const gt: GoogleLoginRequest = { googleToken: response.access_token };
+      const loginResponse = await repo.requestGoogleLogin(gt);
+      if (loginResponse) {
+        if ("accessToken" in loginResponse) {
+          storage.setAccessToken(loginResponse.accessToken);
+          dispatch(setAuthToken(loginResponse.accessToken));
+          storage.setRefreshToken(loginResponse.refreshToken);
+          navigate("/dashboard");
+          toast.success("You are logged in successfully");
+        } else {
+          toast.error(loginResponse.message);
+        }
+      }
+    },
+    onError: () => {
+      console.log("something went wrong");
+    },
+  });
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -49,6 +72,7 @@ const Login = () => {
             </h1>
             <div className="text-center flex flex-col gap-3">
               <button
+                onClick={() => googleLogin()}
                 type="button"
                 className="text-base border border-gray-200 hover:bg-gray-100 px-4 py-2 rounded-lg"
               >

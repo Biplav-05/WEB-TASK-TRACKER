@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/shared/Button";
@@ -8,6 +8,7 @@ import { NavItem } from "../components/shared/NavItem";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const cn = isOpen ? "block" : "hidden";
   const navigate = useNavigate();
 
@@ -19,9 +20,29 @@ export default function Navbar() {
   const handleLogin = () => {
     navigate("/login");
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      if (scrollTop > 0) {
+        setHasScrolled(true);
+      } else {
+        setHasScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <nav
+        className={`bg-white border-gray-200 dark:bg-gray-900 sticky top-0 ${
+          hasScrolled ? "shadow-lg" : ""
+        }`}
+      >
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <NavLink to="/" className="flex items-center space-x-3">
             <Logo logoTitle="Task Tracker" />

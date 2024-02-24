@@ -9,6 +9,7 @@ import Pricing from "./pages/Pricing";
 import Enterprise from "./pages/Enterprise";
 import Learn from "./pages/Learn";
 import { Toaster } from "react-hot-toast";
+import DashBoard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="enterprise" element={<Enterprise />} />
             <Route path="learn" element={<Learn />} />
           </Route>
+          <Route path="dashboard" element={<DashBoard />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
         </Routes>

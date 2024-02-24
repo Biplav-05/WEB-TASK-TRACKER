@@ -1,48 +1,71 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../components/shared/Logo";
 import { googleIcon } from "../components/shared/Icons";
+import { useRepository } from "../hooks/UseRepository";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "../redux/slices/accessSlice";
+import { useGoogleLogin } from "@react-oauth/google";
 type RegisterFormType = {
   cPassword: string;
   email: string;
   password: string;
 };
 
-const registerUser = async (data: FormData) => {
-  console.log("at last");
-  for (const [key, value] of data) {
-    console.log(`${key}: ${value}\n`);
-  }
-  const response = await fetch("http://localhost:8000/api/v1/users/register", {
-    method: "POST",
-    body: data,
-  });
-  if (response && "data" in response) {
-    toast.success("user is register successfully");
-  } else {
-    toast.error("Failed to registration.");
-  }
-};
 const Registration = () => {
   const { register, handleSubmit } = useForm<RegisterFormType>();
   const [error, setError] = useState<string>("");
-  const onFormSubmit = (data: RegisterFormType) => {
+  const { repo, storage } = useRepository();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onFormSubmit = async (data: RegisterFormType) => {
     console.log(data);
     if (data.password === data.cPassword) {
+      const newData = {
+        email: data.email,
+        password: data.password,
+      };
+      const registerResponse = await repo.registerUser(newData);
+      if (registerResponse) {
+        if ("accessToken" in registerResponse) {
+          storage.setAccessToken(registerResponse.accessToken);
+          dispatch(setAuthToken(registerResponse.accessToken));
+          storage.setRefreshToken(registerResponse.refreshToken);
+          navigate("/dashboard");
+          toast.success("User register successfully");
+        } else {
+          toast.error(registerResponse.message);
+        }
+      }
+    } else {
       setError("Password did not match");
-      const formData = new FormData();
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      registerUser(formData);
-      //   reset();
     }
   };
-
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      const gt: GoogleLoginRequest = { googleToken: response.access_token };
+      const loginResponse = await repo.requestGoogleLogin(gt);
+      if (loginResponse) {
+        if ("accessToken" in loginResponse) {
+          storage.setAccessToken(loginResponse.accessToken);
+          dispatch(setAuthToken(loginResponse.accessToken));
+          storage.setRefreshToken(loginResponse.refreshToken);
+          navigate("/dashboard");
+          toast.success("You are logged in successfully");
+        } else {
+          toast.error(loginResponse.message);
+        }
+      }
+    },
+    onError: () => {
+      console.log("something went wrong");
+    },
+  });
   return (
-    <section className="bg-gray-200 py-10">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-full lg:py-0 ">
+    <section className="bg-gray-50 py-10">
+      <div className="flex flex-col items-center justify-center px-6  mx-auto md:h-full lg:py-0 ">
         <NavLink
           to="/"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -56,6 +79,7 @@ const Registration = () => {
             </h1>
             <div className="text-center flex flex-col gap-3">
               <button
+                onClick={() => googleLogin()}
                 type="button"
                 className="text-base border border-gray-200 hover:bg-gray-100 px-4 py-2 rounded-lg"
               >

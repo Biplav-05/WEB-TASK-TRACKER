@@ -1,6 +1,6 @@
 interface IRepository {
   requestGoogleLogin(
-    googleToken: GoogleLoginRequest
+    access_token: GoogleLoginRequest
   ): Promise<LoginResponse | JsonAPIErrorResp | undefined>;
   requestEmailLogin(
     data: EmailLoginRequest

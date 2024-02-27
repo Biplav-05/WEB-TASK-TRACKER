@@ -45,7 +45,7 @@ const Registration = () => {
   };
   const googleLogin = useGoogleLogin({
     onSuccess: async (response) => {
-      const gt: GoogleLoginRequest = { googleToken: response.access_token };
+      const gt: GoogleLoginRequest = { access_token: response.access_token };
       const loginResponse = await repo.requestGoogleLogin(gt);
       if (loginResponse) {
         if ("accessToken" in loginResponse) {

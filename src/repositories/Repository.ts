@@ -23,11 +23,11 @@ export class Repository implements IRepository {
     return this._getResponse<LoginResponse>(response);
   }
   async requestGoogleLogin(
-    googleToken: GoogleLoginRequest
+    access_token: GoogleLoginRequest
   ): Promise<LoginResponse | JsonAPIErrorResp | undefined> {
     const response = await this._api.post<LoginResponse, GoogleLoginRequest>(
-      "path",
-      googleToken,
+      "accounts/login/google",
+      access_token,
       undefined,
       false
     );

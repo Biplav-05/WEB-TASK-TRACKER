@@ -12,7 +12,7 @@ declare type LoginResponse = {
   refreshToken: string;
 };
 declare type GoogleLoginRequest = {
-  googleToken: string;
+  access_token: string;
 };
 declare type EmailLoginRequest = {
   email: string;

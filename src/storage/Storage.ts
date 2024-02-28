@@ -6,17 +6,17 @@ export class LocalStorageClient implements IStorageClient {
   constructor(storage: Storage) {
     this.storage = storage;
   }
-  async setAccessToken(accessToken: string): Promise<void> {
-    this.storage.setItem("accessToken", accessToken);
+  async setAccessToken(access_token: string): Promise<void> {
+    this.storage.setItem("access_token", access_token);
   }
-  async setRefreshToken(refreshToken: string): Promise<void> {
-    this.storage.setItem("refreshToken", refreshToken);
+  async setRefreshToken(refresh_token: string): Promise<void> {
+    this.storage.setItem("refresh_token", refresh_token);
   }
   async getAccessToken(): Promise<string | null> {
-    return this.storage.getItem("accessToken");
+    return this.storage.getItem("access_token");
   }
   async getRefreshToken(): Promise<string | null> {
-    return this.storage.getItem("refreshToken");
+    return this.storage.getItem("refresh_token");
   }
   async clearTokens(): Promise<void> {
     this.storage.clear();

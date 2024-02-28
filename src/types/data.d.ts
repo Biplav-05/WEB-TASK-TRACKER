@@ -1,13 +1,19 @@
 declare type AccessState = {
   access_token: string;
   user_profile: UserProfile | null;
+  access_token: string;
+  user_profile: UserProfile | null;
 };
 declare type UserProfile = {
+  first_name: string;
+  last_name: string;
   first_name: string;
   last_name: string;
   email: string;
 };
 declare type LoginResponse = {
+  access_token: string;
+  refresh_token: string;
   access_token: string;
   refresh_token: string;
 };
@@ -20,11 +26,13 @@ declare type EmailLoginRequest = {
 };
 declare type JsonAPISuccessResp<T> = {
   status_code: number;
+  status_code: number;
   message: string;
   success: boolean;
   data: T;
 };
 declare type JsonAPIErrorResp = {
+  status_code: number;
   status_code: number;
   success: boolean;
   message: string;

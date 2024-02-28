@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import accessSlice from "./slices/accessSlice";
-export const taskTrackerStore = configureStore({
+export const task_tracker_store = configureStore({
   reducer: { accessSlice },
 });

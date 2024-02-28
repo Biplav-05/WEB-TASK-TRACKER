@@ -20,10 +20,10 @@ const Login = () => {
   const loginByEmail = async (data: LoginForm) => {
     const loginResponse = await repo.requestEmailLogin(data);
     if (loginResponse) {
-      if ("accessToken" in loginResponse) {
-        storage.setAccessToken(loginResponse.accessToken);
-        dispatch(setAuthToken(loginResponse.accessToken));
-        storage.setRefreshToken(loginResponse.refreshToken);
+      if ("access_token" in loginResponse) {
+        storage.setAccessToken(loginResponse.access_token);
+        dispatch(setAuthToken(loginResponse.access_token));
+        storage.setRefreshToken(loginResponse.refresh_token);
         navigate("/dashboard");
         toast.success("You are logged in successfully");
       } else {
@@ -40,10 +40,10 @@ const Login = () => {
       const gt: GoogleLoginRequest = { access_token: response.access_token };
       const loginResponse = await repo.requestGoogleLogin(gt);
       if (loginResponse) {
-        if ("accessToken" in loginResponse) {
-          storage.setAccessToken(loginResponse.accessToken);
-          dispatch(setAuthToken(loginResponse.accessToken));
-          storage.setRefreshToken(loginResponse.refreshToken);
+        if ("access_token" in loginResponse) {
+          storage.setAccessToken(loginResponse.access_token);
+          dispatch(setAuthToken(loginResponse.access_token));
+          storage.setRefreshToken(loginResponse.refresh_token);
           navigate("/dashboard");
           toast.success("You are logged in successfully");
         } else {

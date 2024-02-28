@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: AccessState = {
-  accessToken: "",
-  userProfile: null,
+  access_token: "",
+  user_profile: null,
 };
 export const accessSlice = createSlice({
   name: "accessSlice",
   initialState,
   reducers: {
     setAuthToken: (state, action) => {
-      state.accessToken = action.payload;
+      state.access_token = action.payload;
     },
     setUserProfile: (state, action) => {
-      state.userProfile = action.payload;
+      state.user_profile = action.payload;
     },
   },
 });

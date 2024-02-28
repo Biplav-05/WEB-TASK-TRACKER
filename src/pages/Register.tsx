@@ -29,10 +29,10 @@ const Registration = () => {
       };
       const registerResponse = await repo.registerUser(newData);
       if (registerResponse) {
-        if ("accessToken" in registerResponse) {
-          storage.setAccessToken(registerResponse.accessToken);
-          dispatch(setAuthToken(registerResponse.accessToken));
-          storage.setRefreshToken(registerResponse.refreshToken);
+        if ("access_token" in registerResponse) {
+          storage.setAccessToken(registerResponse.access_token);
+          dispatch(setAuthToken(registerResponse.access_token));
+          storage.setRefreshToken(registerResponse.refresh_token);
           navigate("/dashboard");
           toast.success("User register successfully");
         } else {
@@ -45,13 +45,13 @@ const Registration = () => {
   };
   const googleLogin = useGoogleLogin({
     onSuccess: async (response) => {
-      const gt: GoogleLoginRequest = { googleToken: response.access_token };
+      const gt: GoogleLoginRequest = { google_token: response.access_token };
       const loginResponse = await repo.requestGoogleLogin(gt);
       if (loginResponse) {
-        if ("accessToken" in loginResponse) {
-          storage.setAccessToken(loginResponse.accessToken);
-          dispatch(setAuthToken(loginResponse.accessToken));
-          storage.setRefreshToken(loginResponse.refreshToken);
+        if ("access_token" in loginResponse) {
+          storage.setAccessToken(loginResponse.access_token);
+          dispatch(setAuthToken(loginResponse.access_token));
+          storage.setRefreshToken(loginResponse.refresh_token);
           navigate("/dashboard");
           toast.success("You are logged in successfully");
         } else {

@@ -1,31 +1,31 @@
 declare type AccessState = {
-  accessToken: string;
-  userProfile: UserProfile | null;
+  access_token: string;
+  user_profile: UserProfile | null;
 };
 declare type UserProfile = {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
 };
 declare type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 };
 declare type GoogleLoginRequest = {
-  googleToken: string;
+  google_token: string;
 };
 declare type EmailLoginRequest = {
   email: string;
   password: string;
 };
 declare type JsonAPISuccessResp<T> = {
-  statusCode: number;
+  status_code: number;
   message: string;
   success: boolean;
   data: T;
 };
 declare type JsonAPIErrorResp = {
-  statusCode: number;
+  status_code: number;
   success: boolean;
   message: string;
   errors: [];

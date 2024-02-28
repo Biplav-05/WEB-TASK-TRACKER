@@ -1,7 +1,7 @@
 export declare interface IStorageClient {
   getAccessToken(): Promise<string?>;
   getRefreshToken(): Promise<string?>;
-  setAccessToken(accessToken: string): Promise<void>;
-  setRefreshToken(refreshToken: string): Promise<void>;
+  setAccessToken(access_token: string): Promise<void>;
+  setRefreshToken(refresh_token: string): Promise<void>;
   clearTokens(): Promise<void>;
 }

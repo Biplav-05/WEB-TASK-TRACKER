@@ -4,11 +4,19 @@ jobs:
   release:
     runs-on: ubuntu-20.04
     steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'v18.19.1'
+
     - name: Checkout source code
       uses: actions/checkout@v3
 
-    - name: Install the dependencies
-      run: npm ci
+    - name: Clear NPM cache
+      run: npm cache clean --force
+
+    - name: Install the dependencies with retries
+      run: npm ci --prefer-offline --retry 3
 
     - name: Initialise the NPM config
       run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
@@ -29,12 +37,11 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
-    # Print NPM log file in case of failure
+    # If the release step fails, print and upload the NPM error log
     - name: Print NPM error log
       if: failure()
       run: cat /home/runner/.npm/_logs/*-debug-0.log
 
-    # Upload NPM log file as an artifact in case of failure
     - name: Upload NPM error log
       if: failure()
       uses: actions/upload-artifact@v3

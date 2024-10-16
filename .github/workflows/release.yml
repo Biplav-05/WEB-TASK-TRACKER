@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,13 +31,14 @@ jobs:
 
       - name: Enable GitHub Actions Debugging
         run: |
-          echo "GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}"
-          echo "Enable debug logs"
-          echo "::set-env name=ACTIONS_STEP_DEBUG::true"
-          echo "::set-env name=ACTIONS_RUNNER_DEBUG::true"
-      
+          echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
+          echo "ACTIONS_RUNNER_DEBUG=true" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Configure npm for publishing
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Run release-it
         env:
@@ -46,3 +47,11 @@ jobs:
         run: |
           set -e
           npx release-it --verbose
+
+      - name: Notify Success
+        if: success()
+        run: echo "Release successful!"
+
+      - name: Notify Failure
+        if: failure()
+        run: echo "Release failed!"

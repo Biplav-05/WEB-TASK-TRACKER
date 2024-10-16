@@ -11,8 +11,7 @@
       "npm run lint"
     ],
     "after:bump": [
-      "npm run build",
-      "npx auto-changelog --package"
+      "npm run build"
     ]
   },
   "github": {

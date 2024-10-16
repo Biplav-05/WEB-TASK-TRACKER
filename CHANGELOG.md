@@ -1,5 +1,17 @@
 
 
+# 1.0.0 (2024-10-16)
+
+
+### Features
+
+* introduce major overhaul ([c5cee20](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/c5cee201355e1168c1b819dfcde5a590769c599a))
+
+
+### BREAKING CHANGES
+
+* description of the breaking change
+
 # 0.1.0 (2024-10-16)
 
 

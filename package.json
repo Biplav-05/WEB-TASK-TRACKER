@@ -1,6 +1,6 @@
 {
   "name": "task-tracker",
-  "private": true,
+  "private": false,
   "version": "1.0.10",
   "type": "module",
   "scripts": {

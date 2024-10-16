@@ -36,7 +36,6 @@ jobs:
       - name: Notify Success
         if: success()
         run: echo "Release successful!"
-
       - name: Notify Failure
         if: failure()
         run: echo "Release failed!"

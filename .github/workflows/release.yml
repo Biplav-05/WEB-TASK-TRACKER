@@ -1,7 +1,7 @@
 name: Release Automation
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Enables manual triggering of the workflow
 
 jobs:
   release:
@@ -14,10 +14,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 'latest'  # You can change this to 'latest' if preferred
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-optional  # Ignore optional dependencies to prevent errors
 
       - name: Set Git user identity
         run: |
@@ -27,18 +27,17 @@ jobs:
       - name: Configure npm for publishing
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Debug Information
-        run: |
-          echo "Current version in package.json:"
-          cat package.json | jq .version
-          echo "Last commit message:"
-          git log -1 --pretty=%B
-
       - name: Run release-it
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it --verbose
+        run: |
+          if ! npx release-it --verbose; then
+            echo "Release failed!"
+            echo "Check the logs for more details:"
+            cat /home/runner/.npm/_logs/*.log  # Print the latest npm log file
+            exit 1
+          fi
 
       - name: Notify Success
         if: success()
@@ -48,4 +47,4 @@ jobs:
         if: failure()
         run: |
           echo "Release failed!"
-          cat /home/runner/.npm/_logs/*.log
+          echo "Check the logs for more details."

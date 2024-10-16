@@ -8,7 +8,7 @@ const Home = () => {
       </h1>
       <p className="my-5  md:text-3xl text-2xl font-medium">
         <span className="font-bold">
-          Get everyone working in a single platform{" "}
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, exercitationem omnis officia porro, sit reiciendis a natus inventore unde veritatis ducimus! Deserunt dolores commodi porro officia totam quis exercitationem illum.{" "}
         </span>
         designed to manage any type of work
       </p>

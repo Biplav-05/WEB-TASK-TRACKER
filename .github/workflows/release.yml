@@ -1,42 +1,50 @@
-name: Release Automation
-
-on:
-  workflow_dispatch:  # Enables manual triggering
-  push:
-    branches:
-      - master
-
+name: Release & Publish to NPM
+on: workflow_dispatch
 jobs:
   release:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout current branch
-        uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'v18.19.1'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+    - name: Checkout source code
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install  # Using npm instead of yarn
+    - name: Clear NPM cache
+      run: npm cache clean --force
 
-      - name: Build package
-        run: npm run build  # Assuming you have a build script defined in package.json
+    - name: Install the dependencies with retries
+      run: npm ci --prefer-offline --retry 3
 
-      - name: Run release-it
-        env:
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it --verbose  # Run release-it for versioning and publishing
+    - name: Initialise the NPM config
+      run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Notify Success
-        if: success()
-        run: echo "Release successful!"
+    - name: Initialize Git user
+      run: |
+        git config --global user.email "biplav413@gmail.com"
+        git config --global user.name "Biplav-05"
 
-      - name: Notify Failure
-        if: failure()
-        run: |
-          echo "Release failed!"
-          cat /home/runner/.npm/_logs/*.log  # Print np
+    - name: Log git status
+      run: git status
+
+    - name: Run release
+      run: npm run release --ci
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
+    # If the release step fails, print and upload the NPM error log
+    - name: Print NPM error log
+      if: failure()
+      run: cat /home/runner/.npm/_logs/*-debug-0.log
+
+    - name: Upload NPM error log
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: npm-error-log
+        path: /home/runner/.npm/_logs/*-debug-0.log

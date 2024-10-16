@@ -27,12 +27,18 @@ jobs:
       - name: Configure npm for publishing
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
+      - name: Debug Information
+        run: |
+          echo "Current version in package.json:"
+          cat package.json | jq .version
+          echo "Last commit message:"
+          git log -1 --pretty=%B
+
       - name: Run release-it
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npx release-it --verbose || echo "Error during release-it: $? - Check logs for details."
+        run: npx release-it --verbose
 
       - name: Notify Success
         if: success()
@@ -42,4 +48,4 @@ jobs:
         if: failure()
         run: |
           echo "Release failed!"
-          echo "Check the logs for details."
+          cat /home/runner/.npm/_logs/*.log

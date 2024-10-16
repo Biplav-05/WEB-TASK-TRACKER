@@ -10,7 +10,7 @@ const Home = () => {
         <span className="font-bold">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, exercitationem omnis officia porro, sit reiciendis a natus inventore unde veritatis ducimus! Deserunt dolores commodi porro officia totam quis exercitationem illum.{" "}
         </span>
-        designed to mfsadfasfdasdfanage any type of work
+        designed to mfsadfasfdasdfasadfsafsafasdfsafnage any type of work
       </p>
       <button className="hover:translate-y-2 my-5 text-xl text-white font-bold px-5 py-4 rounded-xl bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700">
         Get started. It's FREE {explore}

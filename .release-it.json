@@ -18,7 +18,7 @@
   "github": {
     "release": true,
     "releaseName": "v${version}",
-    "releaseNotes": "npx auto-changelog --latest",
+    "releaseNotes": "npx auto-changelog --package",
     "tokenRef": "GITHUB_TOKEN"
   },
   "npm": {

@@ -29,5 +29,13 @@
     "skipChecks": true,
     "registry": "https://registry.npmjs.org/",
     "tokenRef": "NPM_TOKEN"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "angular"
+      },
+      "infile": "CHANGELOG.md"
+    }
   }
 }

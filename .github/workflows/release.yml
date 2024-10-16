@@ -14,10 +14,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 'latest'
+          node-version: 'latest'  # Set Node.js version to latest
+
+      - name: Clean npm cache
+        run: npm cache clean --force  # Clean the npm cache
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci  # Install dependencies using npm ci
 
       - name: Set Git user identity
         run: |
@@ -32,7 +35,11 @@ jobs:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npx release-it --verbose || { echo "Release-it failed"; cat /home/runner/.npm/_logs/*.log; exit 1; }
+          npx release-it --verbose || { 
+            echo "Release-it failed"; 
+            cat /home/runner/.npm/_logs/*.log;  # Print npm logs if release fails
+            exit 1; 
+          }
 
       - name: Notify Success
         if: success()
@@ -42,4 +49,4 @@ jobs:
         if: failure()
         run: |
           echo "Release failed!"
-          cat /home/runner/.npm/_logs/*.log
+          cat /home/runner/.npm/_logs/*.log  # Print npm logs on failure

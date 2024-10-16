@@ -18,7 +18,8 @@
   "github": {
     "release": true,
     "releaseName": "V${version}",
-    "releaseNotes": "sed -n '/^## \\[${version}\\]/,/^## /p' CHANGELOG.md | sed '1d;$d'"
+    "releaseNotes": "npx auto-changelog --latest",
+    "tokenRef": "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"
   },
   "npm": {
     "publish": true

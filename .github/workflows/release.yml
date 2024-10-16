@@ -14,25 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - name: Set Git user identity
-        run: |
-          git config --global user.email "biplav413@gmail.com"
-          git config --global user.name "Biplav-05"
-
-      - name: Enable GitHub Actions Debugging
-        run: |
-          echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
-          echo "ACTIONS_RUNNER_DEBUG=true" >> $GITHUB_ENV
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
@@ -44,9 +26,7 @@ jobs:
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          set -e
-          npx release-it --verbose
+        run: npx release-it --verbose
 
       - name: Notify Success
         if: success()

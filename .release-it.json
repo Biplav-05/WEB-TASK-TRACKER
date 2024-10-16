@@ -18,7 +18,7 @@
   "github": {
     "release": true,
     "releaseName": "V${version}",
-    "releaseNotes": "cat CHANGELOG.md | sed -n \"/^## \\[${version}\\]/,/^## /p\" | sed \"$ d\""
+    "releaseNotes": "sed -n '/^## \\[${version}\\]/,/^## /p' CHANGELOG.md | sed '1d;$d'"
   },
   "npm": {
     "publish": true

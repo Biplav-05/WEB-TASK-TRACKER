@@ -3,7 +3,7 @@
   "git": {
     "requireBranch": "main",
     "push": true,
-    "tagName": "${version}"
+    "tagName": "v${version}"
   },
   "hooks": {
     "before:init": [
@@ -33,7 +33,8 @@
   "plugins": {
     "@release-it/bumper": {
       "in": "package.json",
-      "out": "package.json"
+      "out": "package.json",
+      "bump": "conventional"
     }
   }
 }

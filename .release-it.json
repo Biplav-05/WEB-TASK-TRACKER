@@ -1,17 +1,24 @@
 {
   "$schema": "https://unpkg.com/release-it/schema/release-it.json",
   "git": {
-    "requireBranch": "main"
+    "requireBranch": "main",
+    "push": true,
+    "tagName": "v${version}"
   },
   "hooks": {
     "before:init": [
       "git pull",
       "npm run lint"
     ],
-    "after:bump": "npx auto-changelog -p"
+    "after:bump": [
+      "npm run build",
+      "npx auto-changelog --package"
+    ]
   },
   "github": {
-    "release": true
+    "release": true,
+    "releaseName": "Release ${version}",
+    "releaseNotes": "cat CHANGELOG.md | sed -n \"/^## \\[${version}\\]/,/^## /p\" | sed \"$ d\""
   },
   "npm": {
     "publish": true

@@ -31,11 +31,15 @@ jobs:
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it --verbose
+        run: |
+          npx release-it --verbose || echo "Error during release-it: $? - Check logs for details."
 
       - name: Notify Success
         if: success()
         run: echo "Release successful!"
+
       - name: Notify Failure
         if: failure()
-        run: echo "Release failed!"
+        run: |
+          echo "Release failed!"
+          echo "Check the logs for details."

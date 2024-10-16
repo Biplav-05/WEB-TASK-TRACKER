@@ -1,7 +1,7 @@
 {
   "name": "task-error-tracer-by-bulla",
   "private": false,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -27,6 +27,7 @@
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
+    "@release-it/bumper": "^6.0.1",
     "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

@@ -29,12 +29,5 @@
     "skipChecks": true,
     "registry": "https://registry.npmjs.org/",
     "tokenRef": "NPM_TOKEN"
-  },
-  "plugins": {
-    "@release-it/bumper": {
-      "in": "package.json",
-      "out": "package.json",
-      "key": "version"
-    }
   }
 }

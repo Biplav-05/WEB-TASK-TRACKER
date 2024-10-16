@@ -34,7 +34,8 @@
     "@release-it/bumper": {
       "in": "package.json",
       "out": "package.json",
-      "bump": "conventional"
+      "bump": "conventional",
+      "key": "version"
     }
   }
 }

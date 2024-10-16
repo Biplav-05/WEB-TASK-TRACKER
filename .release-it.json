@@ -20,8 +20,9 @@
   "github": {
     "release": true,
     "releaseName": "Release ${version}",
-    "releaseNotes": "npx auto-changelog --package",
-    "tokenRef": "TOKEN_GITHUB"
+    "releaseNotes": "npx auto-changelog --package --no-commit-links --no-issues --no-characters",
+    "tokenRef": "TOKEN_GITHUB",
+    "contributors": true
   },
   "npm": {
     "publish": true,

@@ -1,50 +1,48 @@
-name: Release & Publish to NPM
-on: workflow_dispatch
+# This workflow automates the process of releasing a new version of the project. 
+# It allows for manual triggering and includes steps for checking out code, 
+# setting up a Node.js environment, caching dependencies, installing necessary packages, 
+# running the release-it tool for versioning and publishing, 
+# and providing success or failure notifications based on the outcome of the release process.
+
+name: Release Automation
+
+on:
+  workflow_dispatch:  # Enables manual triggering of the workflow
+
 jobs:
-  release:
-    runs-on: ubuntu-20.04
+  release:  # Job for the release process
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
     steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 'v18.19.1'
+      - name: Checkout code
+        uses: actions/checkout@v3  # Fetch the latest code from the repository
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  # Configure the Node.js environment
+        with:
+          node-version: '18'  # Specify the Node.js version
 
-    - name: Checkout source code
-      uses: actions/checkout@v3
+      - name: Cache Node.js modules  # Cache dependencies for faster builds
+        uses: actions/cache@v3  # Action for caching files
+        with:
+          path: ~/.npm  # Path to cached Node.js modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}  # Unique cache key
+          restore-keys: |  # Fallback keys for cache restoration
+            ${{ runner.os }}-npm-  # Restore based on OS
 
-    - name: Clear NPM cache
-      run: npm cache clean --force
+      - name: Install dependencies
+        run: npm ci  # Clean installation of dependencies based on package-lock.json
 
-    - name: Install the dependencies with retries
-      run: npm ci --prefer-offline --retry 3
+      - name: Run release-it
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}  # Token for GitHub API
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  # Token for npm registry
+        run: npx release-it  # Execute release-it for versioning and publishing
 
-    - name: Initialise the NPM config
-      run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Notify Success
+        if: success()  # Notify only if the previous steps succeeded
+        run: echo "Release successful!"
 
-    - name: Initialize Git user
-      run: |
-        git config --global user.email "biplav413@gmail.com"
-        git config --global user.name "Biplav-05"
-
-    - name: Log git status
-      run: git status
-
-    - name: Run release
-      run: npm run release --ci
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-
-    # If the release step fails, print and upload the NPM error log
-    - name: Print NPM error log
-      if: failure()
-      run: cat /home/runner/.npm/_logs/*-debug-0.log
-
-    - name: Upload NPM error log
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: npm-error-log
-        path: /home/runner/.npm/_logs/*-debug-0.log
+      - name: Notify Failure
+        if: failure()  # Notify only if any previous step failed
+        run: echo "Release failed!"

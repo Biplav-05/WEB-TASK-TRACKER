@@ -17,11 +17,15 @@
   },
   "github": {
     "release": true,
-    "releaseName": "V${version}",
+    "releaseName": "v${version}",
     "releaseNotes": "npx auto-changelog --latest",
-    "tokenRef": "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"
+    "tokenRef": "GITHUB_TOKEN"
   },
   "npm": {
-    "publish": true
+    "publish": true,
+    "ignoreVersion": false,
+    "skipChecks": true,
+    "registry": "https://registry.npmjs.org/",
+    "tokenRef": "NPM_TOKEN"
   }
 }

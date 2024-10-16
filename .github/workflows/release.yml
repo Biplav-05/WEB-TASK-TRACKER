@@ -31,7 +31,7 @@ jobs:
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it
+        run: npx release-it --verbose
 
       - name: Notify Success
         if: success()

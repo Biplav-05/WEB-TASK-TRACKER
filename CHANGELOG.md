@@ -1,3 +1,12 @@
+
+
+# 0.1.0 (2024-10-16)
+
+
+### Features
+
+* add user functionality ([ba7771e](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/ba7771e48aa244b863cea544d65a8a9dbb024a3d))
+
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.

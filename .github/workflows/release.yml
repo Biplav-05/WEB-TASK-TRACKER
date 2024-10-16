@@ -1,6 +1,7 @@
 name: Release Automation
 
 on:
+  workflow_dispatch:  # Enables manual triggering
   push:
     branches:
       - master
@@ -10,41 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout current branch
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            npm-
-
-      - name: Clean npm cache
-        run: npm cache clean --force
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: npm install  # Using npm instead of yarn
 
-      - name: Set Git user identity
-        run: |
-          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
-          git config user.name "${{ secrets.GIT_USER_NAME }}"
-
-      - name: Configure npm for publishing
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Build package
+        run: npm run build  # Assuming you have a build script defined in package.json
 
       - name: Run release-it
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it --verbose || { echo "Release failed!"; cat /home/runner/.npm/_logs/*.log; exit 1; }
+        run: npx release-it --verbose  # Run release-it for versioning and publishing
 
       - name: Notify Success
         if: success()
@@ -52,4 +37,6 @@ jobs:
 
       - name: Notify Failure
         if: failure()
-        run: echo "Release failed!"
+        run: |
+          echo "Release failed!"
+          cat /home/runner/.npm/_logs/*.log  # Print np

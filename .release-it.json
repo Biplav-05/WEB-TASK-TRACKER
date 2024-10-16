@@ -19,7 +19,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
+    "releaseName": "Release ${version}",
     "releaseNotes": "npx auto-changelog --package",
     "tokenRef": "TOKEN_GITHUB"
   },

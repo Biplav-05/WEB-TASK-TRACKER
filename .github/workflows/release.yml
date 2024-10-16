@@ -30,12 +30,17 @@ jobs:
           restore-keys: |  # Fallback keys for cache restoration
             ${{ runner.os }}-npm-  # Restore based on OS
 
+      - name: Set Git user identity  # Set the Git user identity for committing
+        run: |
+          git config --global user.email "biplav413@gmail.com"  # Set your email
+          git config --global user.name "Biplav-05"  # Set your name
+
       - name: Install dependencies
         run: npm ci  # Clean installation of dependencies based on package-lock.json
 
       - name: Run release-it
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}  # Token for GitHub API
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}  # Token for GitHub API
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  # Token for npm registry
         run: npx release-it  # Execute release-it for versioning and publishing
 

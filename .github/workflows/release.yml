@@ -1,7 +1,7 @@
 name: Release Automation
 
 on:
-  workflow_dispatch:  # Enables manual triggering of the workflow
+  workflow_dispatch:
 
 jobs:
   release:
@@ -14,10 +14,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Set Git user identity
+        run: |
+          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
+          git config user.name "${{ secrets.GIT_USER_NAME }}"
 
       - name: Configure npm for publishing
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
@@ -26,7 +31,7 @@ jobs:
         env:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx release-it --verbose
+        run: npx release-it
 
       - name: Notify Success
         if: success()

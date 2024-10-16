@@ -12,10 +12,6 @@
     ],
     "after:bump": [
       "npm run build"
-    ],
-    "after:release": [
-      "echo 'Releasing version ${version}'",
-      "npm publish"
     ]
   },
   "github": {

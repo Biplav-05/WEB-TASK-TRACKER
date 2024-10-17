@@ -1,5 +1,12 @@
 
 
+## 1.3.1 (2024-10-17)
+
+
+### Bug Fixes
+
+* node version ([853b29c](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/853b29c96eb5d3390d4451fb3c6a2aec5d3af773))
+
 # [1.3.0](https://github.com/Biplav-05/WEB-TASK-TRACKER/compare/v1.3.0-beta.0...v1.3.0) (2024-10-17)
 
 # 1.3.0-beta.0 (2024-10-17)

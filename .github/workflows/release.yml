@@ -1,54 +1,84 @@
 name: Release & Publish to NPM
-# on: workflow_dispatch
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: 'Specify release type: regular, alpha, beta, or rc'
+        required: true
+        default: 'regular'
 
 jobs:
   release:
     runs-on: ubuntu-20.04
+
+    container:
+      image: alpine:latest
+
     steps:
+      # Validate the release type
+      - name: Validate release type
+        id: validate_release_type
+        run: |
+          if [[ "${{ github.event.inputs.release-type }}" != "regular" && "${{ github.event.inputs.release-type }}" != "alpha" && "${{ github.event.inputs.release-type }}" != "beta" && "${{ github.event.inputs.release-type }}" != "rc" ]]; then
+            echo "Error: Invalid release type '${{ github.event.inputs.release-type }}'. It must be one of: regular, alpha, beta, or rc."
+            exit 1
+          fi
+
       # Set up Node.js
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       # Checkout source code
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
       # Clear NPM cache
-      - run: npm cache clean --force
+      - name: Clear NPM cache
+        run: npm cache clean --force
 
       # Install dependencies
-      - run: npm ci --prefer-offline --retry 3
+      - name: Install dependencies
+        run: npm ci --prefer-offline --retry 3
 
       # Initialize NPM config with token
-      - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+      - name: Initialize NPM config
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       # Set Git user
-      - run: |
+      - name: Set Git user
+        run: |
           git config --global user.email ${{ secrets.GIT_USER_EMAIL }}
           git config --global user.name ${{ secrets.GIT_USER_NAME }}
 
       # Log git status
-      - run: git status
+      - name: Log git status
+        run: git status
 
       # Run release-it
-      - run: |
-          npx release-it
+      - name: Run release-it
+        run: |
+          if [ "${{ github.event.inputs.release-type }}" == "regular" ]; then
+            npx release-it
+          else
+            npx release-it --preRelease=${{ github.event.inputs.release-type }}
+          fi
           echo "Release process completed successfully."
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
 
       # If the release step fails, print and upload the NPM error log
-      - if: failure()
+      - name: Print NPM error log
+        if: failure()
         run: |
           echo "Release process failed. Check the NPM error log for details."
           cat /home/runner/.npm/_logs/*-debug-0.log
 
-      - if: failure()
+      - name: Upload NPM error log
+        if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: npm-error-log

@@ -1,5 +1,12 @@
 
 
+# 1.2.0 (2024-10-17)
+
+
+### Features
+
+* release note ([e9cd44a](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/e9cd44a1a5ee45afb3cf1f58e67b25135f754287))
+
 ## 1.1.1 (2024-10-17)
 
 

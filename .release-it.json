@@ -20,7 +20,7 @@
   "github": {
     "release": true,
     "releaseName": "Release ${version}",
-    "releaseNotes": "node generateReleaseNotes.js ${latestVersion} ${version}",
+    "releaseNotes": "npx auto-changelog --package --stdout",
     "tokenRef": "TOKEN_GITHUB",
     "contributors": true
   },

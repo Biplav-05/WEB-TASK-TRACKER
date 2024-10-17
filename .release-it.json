@@ -20,6 +20,7 @@
   "github": {
     "release": true,
     "releaseName": "Release ${version}",
+    "preRelease": false,
     "autoGenerate": true,
     "tokenRef": "TOKEN_GITHUB",
     "contributors": true

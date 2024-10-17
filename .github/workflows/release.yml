@@ -54,15 +54,16 @@ jobs:
       - name: Log git status
         run: git status
 
-      # Set preRelease flag based on release type
+      # Set preRelease flag based on release type using Environment Files
       - name: Set preRelease flag
         id: set_preRelease_flag
         run: |
-          if [ "${{ github.event.inputs.release-type }}" == "regular" ]; then
-            echo "::set-output name=preRelease::false"
-          else
-            echo "::set-output name=preRelease::true"
-          fi
+         if [ "${{ github.event.inputs.release-type }}" == "regular" ]; then
+           echo "preRelease=false" >> $GITHUB_ENV
+         else
+           echo "preRelease=true" >> $GITHUB_ENV
+         fi
+
 
       # Run release-it
       - name: Run release-it
@@ -76,6 +77,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          prerelease: ${{ steps.set_preRelease_flag.outputs.preRelease }}
 
       # If the release step fails, print and upload the NPM error log
       - name: Print NPM error log

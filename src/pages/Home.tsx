@@ -2,7 +2,7 @@ import { explore } from "../components/shared/Icons";
 
 const Home = () => {
   return (
-    <div className="flex flex-col py-16 md:px-80 px-10 items-center text-center">
+    <div className="flex flex-col py-16 md:px-80 px-10 items-center text-center border">
       <h1 className="text-5xl md:text-7xl font-extrabold md:leading-relaxed leading-normal bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700 inline-block text-transparent  bg-clip-text">
         One app to replace them all
       </h1>

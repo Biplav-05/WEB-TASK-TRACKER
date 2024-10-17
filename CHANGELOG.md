@@ -1,5 +1,12 @@
 
 
+# 1.1.0 (2024-10-17)
+
+
+### Features
+
+* one ([7e02cc8](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/7e02cc838a534d7852538329cac94bbe00db7296))
+
 # 1.0.0 (2024-10-16)
 
 

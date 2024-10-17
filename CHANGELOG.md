@@ -1,5 +1,7 @@
 
 
+# [1.3.0](https://github.com/Biplav-05/WEB-TASK-TRACKER/compare/v1.3.0-beta.0...v1.3.0) (2024-10-17)
+
 # 1.3.0-beta.0 (2024-10-17)
 
 

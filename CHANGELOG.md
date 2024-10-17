@@ -1,5 +1,12 @@
 
 
+## 1.2.1 (2024-10-17)
+
+
+### Bug Fixes
+
+* change ([e948840](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/e94884070d203bcf2e13e57080d37051ea2e03f3))
+
 # 1.2.0 (2024-10-17)
 
 

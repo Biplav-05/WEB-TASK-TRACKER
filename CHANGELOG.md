@@ -1,5 +1,12 @@
 
 
+## 1.2.3 (2024-10-17)
+
+
+### Bug Fixes
+
+* border line ([#10](https://github.com/Biplav-05/WEB-TASK-TRACKER/issues/10)) ([634dc11](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/634dc11d78dd9c966be748749e225cd91fe569cf))
+
 ## 1.2.2 (2024-10-17)
 
 

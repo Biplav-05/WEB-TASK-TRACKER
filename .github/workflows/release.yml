@@ -43,11 +43,8 @@ jobs:
       # Initialize NPM config with token based on environment
       - name: Initialize NPM config
         run: |
-          if [ "$RELEASE_TYPE" == "production" ]; then
-            npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_PROD }}
-          else
-            npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_STAGING }}
-          fi
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
 
       # Set Git user
       - name: Set Git user

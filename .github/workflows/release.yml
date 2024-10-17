@@ -1,51 +1,54 @@
 name: Release & Publish to NPM
-
-on: workflow_dispatch
+# on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   release:
     runs-on: ubuntu-20.04
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      # Set up Node.js
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Checkout source code
-        uses: actions/checkout@v3
+      # Checkout source code
+      - uses: actions/checkout@v3
 
-      - name: Clear NPM cache
-        run: npm cache clean --force
+      # Clear NPM cache
+      - run: npm cache clean --force
 
-      - name: Install dependencies with retries
-        run: npm ci --prefer-offline --retry 3
+      # Install dependencies
+      - run: npm ci --prefer-offline --retry 3
 
-      - name: Initialize NPM config
-        run: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Initialize NPM config with token
+      - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
-      - name: Initialize Git user
-        run: |
+      # Set Git user
+      - run: |
           git config --global user.email ${{ secrets.GIT_USER_EMAIL }}
           git config --global user.name ${{ secrets.GIT_USER_NAME }}
 
-      - name: Log git status
-        run: git status
+      # Log git status
+      - run: git status
 
-      - name: Run release-it
-        run: npx release-it
+      # Run release-it
+      - run: |
+          npx release-it
+          echo "Release process completed successfully."
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
 
       # If the release step fails, print and upload the NPM error log
-      - name: Print NPM error log
-        if: failure()
-        run: cat /home/runner/.npm/_logs/*-debug-0.log
+      - if: failure()
+        run: |
+          echo "Release process failed. Check the NPM error log for details."
+          cat /home/runner/.npm/_logs/*-debug-0.log
 
-      - name: Upload NPM error log
-        if: failure()
+      - if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: npm-error-log

@@ -1,5 +1,12 @@
 
 
+# 1.3.0-beta.0 (2024-10-17)
+
+
+### Bug Fixes
+
+* pre release flag ([9a42740](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/9a42740adb52ba01631b8b0bb960686780890d54))
+
 # 1.3.0-alpha.1 (2024-10-17)
 
 

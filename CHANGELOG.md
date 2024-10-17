@@ -1,5 +1,12 @@
 
 
+# 1.3.0-alpha.1 (2024-10-17)
+
+
+### Features
+
+* pre-release ([134d934](https://github.com/Biplav-05/WEB-TASK-TRACKER/commit/134d93453c3d90aab49ec2533c922c5b5a877323))
+
 # 1.3.0-alpha.0 (2024-10-17)
 
 

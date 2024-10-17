@@ -1,0 +1,11 @@
+{
+  "output": "CHANGELOG.md",
+  "template": {
+    "commit": "- {{message}}",
+    "main": "# Change Log\n\n{{commits}}",
+    "unreleased": "",
+    "version": "## {{version}}\n\n{{commits}}"
+  },
+  "unreleased": false,
+  "commitLimit": false
+}

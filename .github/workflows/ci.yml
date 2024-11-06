@@ -32,8 +32,8 @@ jobs:
           npm install -g eslint
           npm install -g eslint-config-airbnb-typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
       - name: Run ESLint (Lint Check)
-        run: npx eslint "**/*.{js,jsx,ts,tsx}"
-        
+        run: npx eslint "**/*.{js,jsx,ts,tsx}" --config .eslintrc.js 
+
   static-analysis:
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,50 @@
+name: MR Workflow
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install Prettier
+        run: npm install -g prettier
+      
+      - name: Run Prettier (Code Format Check)
+        run: prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
+
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install ESLint and config
+        run: |
+          npm install -g eslint
+          npm install -g eslint-config-airbnb-typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+      - name: Run ESLint (Lint Check)
+        run: eslint . --ext .js,.jsx,.ts,.tsx
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

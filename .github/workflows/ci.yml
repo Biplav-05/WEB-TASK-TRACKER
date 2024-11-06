@@ -1,0 +1,55 @@
+name: MR Workflow
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Code Formatting Check
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+      - name: Install Prettier
+        run: npm install -g prettier
+      - name: Run Prettier (Code Format Check)
+        run: prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
+
+  # Linting Check
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+      - name: Install ESLint and Airbnb config
+        run: |
+          npm install eslint eslint-config-airbnb-typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev --legacy-peer-deps
+      - name: Run ESLint (Lint Check) with Inline Configuration
+        run: |
+          npx eslint "**/*.{js,jsx,ts,tsx}" \
+          --ext .js,.jsx,.ts,.tsx \
+          --parser @typescript-eslint/parser \
+          --plugin @typescript-eslint \
+          --rule 'no-console:warn' \
+          --rule 'semi:[error, always]' \
+          --extends airbnb-typescript
+          
+  # Static Analysis
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+      - name: Install CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

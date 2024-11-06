@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v4
       - name: Install ESLint and Airbnb config
         run: |
-          npm install eslint eslint-config-airbnb-typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+          npm install eslint eslint-config-airbnb-typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev --legacy-peer-deps
       - name: Run ESLint (Lint Check) with Inline Configuration
         run: |
             npx eslint "**/*.{js,jsx,ts,tsx}" \
